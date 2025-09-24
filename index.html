@@ -1,217 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BuildTracker - Construction Progress Management</title>
+    <title>IriyoPharma - Agent Management System</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-pills"></i>
+                <h2>IriyoPharma</h2>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </li>
+            <li class="menu-item" data-section="agents">
+                <i class="fas fa-users"></i>
+                <span>Agent Management</span>
+            </li>
+            <li class="menu-item" data-section="visits">
+                <i class="fas fa-calendar-check"></i>
+                <span>Doctor Visits</span>
+            </li>
+            <li class="menu-item" data-section="distribution">
+                <i class="fas fa-truck"></i>
+                <span>Drug Distribution</span>
+            </li>
+            <li class="menu-item" data-section="samples">
+                <i class="fas fa-flask"></i>
+                <span>Sample Management</span>
+            </li>
+            <li class="menu-item" data-section="reports">
+                <i class="fas fa-chart-line"></i>
+                <span>Reports & Analytics</span>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
         <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">🏗️</div>
-                    <h1 class="logo-text">BuildTracker</h1>
-                </div>
+                <h1 id="page-title">Dashboard</h1>
                 <div class="header-actions">
-                    <button class="btn btn--outline btn--sm mobile-menu-toggle">
-                        <span class="menu-icon">☰</span>
+                    <span class="current-time" id="current-time"></span>
+                    <button class="btn btn--primary" id="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        Quick Add
                     </button>
                 </div>
             </div>
         </header>
 
-        <div class="main-layout">
-            <!-- Sidebar Navigation -->
-            <aside class="sidebar">
-                <nav class="nav">
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <button class="nav-link active" data-view="dashboard">
-                                📊 Dashboard
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="projects">
-                                🏢 Projects
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="upload">
-                                📤 Upload Progress
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="photos">
-                                📷 Photo Gallery
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="workers">
-                                👷 Workers
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
-
-            <!-- Main Content Area -->
-            <main class="main-content">
-                <!-- Dashboard View -->
-                <div id="dashboard" class="view active">
-                    <div class="view-header">
-                        <h2>Dashboard</h2>
-                        <p class="view-subtitle">Overview of all construction activities</p>
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--color-bg-1);">
+                        <i class="fas fa-users" style="color: var(--color-teal-500);"></i>
                     </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">🏗️</div>
-                            <div class="stat-content">
-                                <div class="stat-number" id="activeProjects">3</div>
-                                <div class="stat-label">Active Projects</div>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">👷</div>
-                            <div class="stat-content">
-                                <div class="stat-number" id="workersOnline">3</div>
-                                <div class="stat-label">Workers Online</div>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">📷</div>
-                            <div class="stat-content">
-                                <div class="stat-number" id="photosToday">8</div>
-                                <div class="stat-label">Photos Today</div>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">✅</div>
-                            <div class="stat-content">
-                                <div class="stat-number" id="tasksCompleted">15</div>
-                                <div class="stat-label">Tasks Completed</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-grid">
-                        <div class="dashboard-section">
-                            <h3>Project Progress</h3>
-                            <div class="progress-list" id="projectProgress"></div>
-                        </div>
-                        
-                        <div class="dashboard-section">
-                            <h3>Recent Updates</h3>
-                            <div class="updates-feed" id="recentUpdates"></div>
-                        </div>
+                    <div class="kpi-content">
+                        <h3 id="active-agents">2</h3>
+                        <p>Active Agents</p>
                     </div>
                 </div>
-
-                <!-- Projects View -->
-                <div id="projects" class="view">
-                    <div class="view-header">
-                        <h2>Projects</h2>
-                        <p class="view-subtitle">Manage and monitor all construction projects</p>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--color-bg-3);">
+                        <i class="fas fa-calendar-check" style="color: var(--color-teal-600);"></i>
                     </div>
-                    <div class="projects-grid" id="projectsGrid"></div>
-                </div>
-
-                <!-- Upload View -->
-                <div id="upload" class="view">
-                    <div class="view-header">
-                        <h2>Upload Progress</h2>
-                        <p class="view-subtitle">Submit new work updates and photos</p>
-                    </div>
-                    
-                    <div class="upload-form-container">
-                        <form class="upload-form" id="uploadForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="projectSelect">Project</label>
-                                    <select class="form-control" id="projectSelect" required>
-                                        <option value="">Select a project...</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="workTypeSelect">Work Type</label>
-                                    <select class="form-control" id="workTypeSelect" required>
-                                        <option value="">Select work type...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="locationInput">Location</label>
-                                <input type="text" class="form-control" id="locationInput" placeholder="e.g., East Wing, Floor 2" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="descriptionInput">Work Description</label>
-                                <textarea class="form-control" id="descriptionInput" rows="4" placeholder="Describe the work completed and any important notes..." required></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="photoInput">Upload Photo</label>
-                                <input type="file" class="form-control" id="photoInput" accept="image/*">
-                                <div class="photo-preview" id="photoPreview"></div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn--primary btn--lg btn--full-width">
-                                Submit Update
-                            </button>
-                        </form>
-                        
-                        <div class="success-message hidden" id="successMessage">
-                            <div class="success-icon">✅</div>
-                            <h3>Update Submitted Successfully!</h3>
-                            <p>Your progress update has been posted and clients will be notified.</p>
-                        </div>
+                    <div class="kpi-content">
+                        <h3 id="doctors-visited">8</h3>
+                        <p>Doctors Visited Today</p>
                     </div>
                 </div>
-
-                <!-- Photos View -->
-                <div id="photos" class="view">
-                    <div class="view-header">
-                        <h2>Photo Gallery</h2>
-                        <p class="view-subtitle">Browse all construction photos and updates</p>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--color-bg-2);">
+                        <i class="fas fa-flask" style="color: var(--color-orange-500);"></i>
                     </div>
-                    
-                    <div class="gallery-filters">
-                        <select class="form-control filter-select" id="projectFilter">
-                            <option value="">All Projects</option>
-                        </select>
-                        <select class="form-control filter-select" id="workTypeFilter">
-                            <option value="">All Work Types</option>
-                        </select>
+                    <div class="kpi-content">
+                        <h3 id="samples-distributed">27</h3>
+                        <p>Samples Distributed</p>
                     </div>
-                    
-                    <div class="photo-gallery" id="photoGallery"></div>
                 </div>
-
-                <!-- Workers View -->
-                <div id="workers" class="view">
-                    <div class="view-header">
-                        <h2>Workers</h2>
-                        <p class="view-subtitle">Team members and their current status</p>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--color-bg-4);">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--color-red-500);"></i>
                     </div>
-                    <div class="workers-grid" id="workersGrid"></div>
+                    <div class="kpi-content">
+                        <h3 id="pending-requests">4</h3>
+                        <p>Stock Requests Pending</p>
+                    </div>
                 </div>
-            </main>
-        </div>
-    </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--color-bg-5);">
+                        <i class="fas fa-check-circle" style="color: var(--color-teal-700);"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3 id="orders-completed">12</h3>
+                        <p>Orders Completed</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--color-bg-6);">
+                        <i class="fas fa-rupee-sign" style="color: var(--color-orange-600);"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3 id="revenue-month">₹2,45,000</h3>
+                        <p>Revenue This Month</p>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Photo Modal -->
-    <div class="modal hidden" id="photoModal">
-        <div class="modal-overlay" id="modalOverlay"></div>
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Visit Trends (Last 7 Days)</h3>
+                    </div>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="visitTrendsChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Sample Distribution by Category</h3>
+                    </div>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="sampleDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-feed">
+                <h3>Recent Activity</h3>
+                <div class="activity-list" id="activity-list">
+                    <!-- Activity items will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Agent Management Section -->
+        <section id="agents" class="section">
+            <div class="section-header">
+                <h2>Agent Management</h2>
+                <button class="btn btn--primary" id="add-agent-btn">
+                    <i class="fas fa-plus"></i>
+                    Add Agent
+                </button>
+            </div>
+            <div class="filters-bar">
+                <input type="text" class="form-control" id="agent-search" placeholder="Search agents...">
+                <select class="form-control" id="agent-filter">
+                    <option value="all">All Agents</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">On Leave</option>
+                </select>
+            </div>
+            <div class="agents-grid" id="agents-grid">
+                <!-- Agent cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Doctor Visits Section -->
+        <section id="visits" class="section">
+            <div class="section-header">
+                <h2>Doctor Visits</h2>
+                <button class="btn btn--primary" id="schedule-visit-btn">
+                    <i class="fas fa-calendar-plus"></i>
+                    Schedule Visit
+                </button>
+            </div>
+            <div class="filters-bar">
+                <input type="date" class="form-control" id="visit-date-filter">
+                <select class="form-control" id="visit-status-filter">
+                    <option value="all">All Visits</option>
+                    <option value="completed">Completed</option>
+                    <option value="scheduled">Scheduled</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
+            <div class="visits-table-container">
+                <table class="data-table" id="visits-table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Samples Given</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visits-table-body">
+                        <!-- Visits will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Drug Distribution Section -->
+        <section id="distribution" class="section">
+            <div class="section-header">
+                <h2>Drug Distribution</h2>
+                <button class="btn btn--primary" id="add-product-btn">
+                    <i class="fas fa-plus"></i>
+                    Add Product
+                </button>
+            </div>
+            <div class="inventory-stats">
+                <div class="stat-card">
+                    <h4>Total Products</h4>
+                    <span class="stat-value" id="total-products">3</span>
+                </div>
+                <div class="stat-card">
+                    <h4>Low Stock Items</h4>
+                    <span class="stat-value critical" id="low-stock-items">2</span>
+                </div>
+                <div class="stat-card">
+                    <h4>Expiring Soon</h4>
+                    <span class="stat-value warning" id="expiring-items">1</span>
+                </div>
+            </div>
+            <div class="products-grid" id="products-grid">
+                <!-- Product cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Sample Management Section -->
+        <section id="samples" class="section">
+            <div class="section-header">
+                <h2>Sample Management</h2>
+                <button class="btn btn--primary" id="allocate-sample-btn">
+                    <i class="fas fa-plus"></i>
+                    Allocate Sample
+                </button>
+            </div>
+            <div class="filters-bar">
+                <select class="form-control" id="sample-status-filter">
+                    <option value="all">All Samples</option>
+                    <option value="approved">Approved</option>
+                    <option value="pending">Pending</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+                <select class="form-control" id="sample-agent-filter">
+                    <option value="all">All Agents</option>
+                </select>
+            </div>
+            <div class="samples-table-container">
+                <table class="data-table" id="samples-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Agent</th>
+                            <th>Doctor</th>
+                            <th>Quantity</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Feedback</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="samples-table-body">
+                        <!-- Samples will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Reports & Analytics Section -->
+        <section id="reports" class="section">
+            <div class="section-header">
+                <h2>Reports & Analytics</h2>
+                <div class="date-range-picker">
+                    <input type="date" class="form-control" id="report-start-date">
+                    <span>to</span>
+                    <input type="date" class="form-control" id="report-end-date">
+                    <button class="btn btn--secondary" id="generate-report-btn">Generate</button>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <h3>Agent Performance</h3>
+                    <div style="position: relative; height: 250px;">
+                        <canvas id="agentPerformanceChart"></canvas>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h3>Territory Analysis</h3>
+                    <div style="position: relative; height: 250px;">
+                        <canvas id="territoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h3>Sample Approval Rate</h3>
+                    <div style="position: relative; height: 250px;">
+                        <canvas id="approvalRateChart"></canvas>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h3>Stock Movement Trends</h3>
+                    <div style="position: relative; height: 250px;">
+                        <canvas id="stockMovementChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for forms -->
+    <div class="modal hidden" id="modal">
+        <div class="modal-overlay"></div>
         <div class="modal-content">
-            <button class="modal-close" id="modalClose">×</button>
-            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-header">
+                <h3 id="modal-title">Modal Title</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
+
 </html>
