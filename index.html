@@ -4,19 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IriyoPharma - Agent Management System</title>
+    <title>Iriyo Pharma - Agent Management System</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-pills" src="IriyoLogo.png"></i>
+                </div>
+                <h2>Iriyo Pharma</h2>
+            </div>
+        </div>
+        <div class="mobile-header-actions">
+            <span class="current-time mobile-time" id="mobile-current-time"></span>
+        </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
     <!-- Sidebar Navigation -->
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">
-                <i class="fas fa-pills"></i>
-                <h2>IriyoPharma</h2>
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h2>Iriyo Pharma</h2>
+                </div>
+                <button class="sidebar-close" id="sidebar-close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         </div>
         <ul class="sidebar-menu">
@@ -54,10 +82,10 @@
             <div class="header-content">
                 <h1 id="page-title">Dashboard</h1>
                 <div class="header-actions">
-                    <span class="current-time" id="current-time"></span>
-                    <button class="btn btn--primary" id="quick-action-btn">
+                    <span class="current-time desktop-time" id="current-time"></span>
+                    <button class="btn btn--primary quick-action" id="quick-action-btn">
                         <i class="fas fa-plus"></i>
-                        Quick Add
+                        <span class="btn-text">Quick Add</span>
                     </button>
                 </div>
             </div>
@@ -129,7 +157,7 @@
                     <div class="chart-header">
                         <h3>Visit Trends (Last 7 Days)</h3>
                     </div>
-                    <div style="position: relative; height: 300px;">
+                    <div class="chart-wrapper" style="position: relative; height: 300px;">
                         <canvas id="visitTrendsChart"></canvas>
                     </div>
                 </div>
@@ -137,7 +165,7 @@
                     <div class="chart-header">
                         <h3>Sample Distribution by Category</h3>
                     </div>
-                    <div style="position: relative; height: 300px;">
+                    <div class="chart-wrapper" style="position: relative; height: 300px;">
                         <canvas id="sampleDistributionChart"></canvas>
                     </div>
                 </div>
@@ -158,7 +186,7 @@
                 <h2>Agent Management</h2>
                 <button class="btn btn--primary" id="add-agent-btn">
                     <i class="fas fa-plus"></i>
-                    Add Agent
+                    <span class="btn-text">Add Agent</span>
                 </button>
             </div>
             <div class="filters-bar">
@@ -180,7 +208,7 @@
                 <h2>Doctor Visits</h2>
                 <button class="btn btn--primary" id="schedule-visit-btn">
                     <i class="fas fa-calendar-plus"></i>
-                    Schedule Visit
+                    <span class="btn-text">Schedule Visit</span>
                 </button>
             </div>
             <div class="filters-bar">
@@ -192,23 +220,25 @@
                     <option value="pending">Pending</option>
                 </select>
             </div>
-            <div class="visits-table-container">
-                <table class="data-table" id="visits-table">
-                    <thead>
-                        <tr>
-                            <th>Agent</th>
-                            <th>Doctor</th>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Samples Given</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="visits-table-body">
-                        <!-- Visits will be populated by JavaScript -->
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <div class="table-scroll">
+                    <table class="data-table" id="visits-table">
+                        <thead>
+                            <tr>
+                                <th>Agent</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Samples</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="visits-table-body">
+                            <!-- Visits will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -218,7 +248,7 @@
                 <h2>Drug Distribution</h2>
                 <button class="btn btn--primary" id="add-product-btn">
                     <i class="fas fa-plus"></i>
-                    Add Product
+                    <span class="btn-text">Add Product</span>
                 </button>
             </div>
             <div class="inventory-stats">
@@ -246,7 +276,7 @@
                 <h2>Sample Management</h2>
                 <button class="btn btn--primary" id="allocate-sample-btn">
                     <i class="fas fa-plus"></i>
-                    Allocate Sample
+                    <span class="btn-text">Allocate Sample</span>
                 </button>
             </div>
             <div class="filters-bar">
@@ -260,24 +290,26 @@
                     <option value="all">All Agents</option>
                 </select>
             </div>
-            <div class="samples-table-container">
-                <table class="data-table" id="samples-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Agent</th>
-                            <th>Doctor</th>
-                            <th>Quantity</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Feedback</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="samples-table-body">
-                        <!-- Samples will be populated by JavaScript -->
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <div class="table-scroll">
+                    <table class="data-table" id="samples-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Agent</th>
+                                <th>Doctor</th>
+                                <th>Quantity</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Feedback</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="samples-table-body">
+                            <!-- Samples will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -296,31 +328,36 @@
             <div class="reports-grid">
                 <div class="report-card">
                     <h3>Agent Performance</h3>
-                    <div style="position: relative; height: 250px;">
+                    <div class="chart-wrapper" style="position: relative; height: 250px;">
                         <canvas id="agentPerformanceChart"></canvas>
                     </div>
                 </div>
                 <div class="report-card">
                     <h3>Territory Analysis</h3>
-                    <div style="position: relative; height: 250px;">
+                    <div class="chart-wrapper" style="position: relative; height: 250px;">
                         <canvas id="territoryChart"></canvas>
                     </div>
                 </div>
                 <div class="report-card">
                     <h3>Sample Approval Rate</h3>
-                    <div style="position: relative; height: 250px;">
+                    <div class="chart-wrapper" style="position: relative; height: 250px;">
                         <canvas id="approvalRateChart"></canvas>
                     </div>
                 </div>
                 <div class="report-card">
                     <h3>Stock Movement Trends</h3>
-                    <div style="position: relative; height: 250px;">
+                    <div class="chart-wrapper" style="position: relative; height: 250px;">
                         <canvas id="stockMovementChart"></canvas>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- Floating Action Button (Mobile) -->
+    <button class="fab" id="mobile-fab">
+        <i class="fas fa-plus"></i>
+    </button>
 
     <!-- Modal for forms -->
     <div class="modal hidden" id="modal">
